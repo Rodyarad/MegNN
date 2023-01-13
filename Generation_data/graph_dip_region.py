@@ -18,7 +18,7 @@ with open("oblast", "rb") as fp:   # Unpickling
 
 max_k = 10
 results = []
-kol_chains = 250
+kol_chains = 10
 
 """Функция создания ветви возбуждаемых диполей"""
 
@@ -36,11 +36,11 @@ def childs(k, dip, j):
   if p_child <= 50:
     child = 1
   else:
-    child = 1
+    child = 2
 
   for m in range(child):
 
-    R = 10
+    R = 5
     n = len(idx)
     n_neigh = 0
     Neigh = []
@@ -59,13 +59,26 @@ def childs(k, dip, j):
         n_neigh = n_neigh + 1
         Neigh.append(view_dipol)
 
+    if len(Neigh) == 0:
+      print('Соседей нет')
+      break
+
     alpha = np.var(dist, ddof = 1)
+
+    print(f'alpa = {alpha}')
+    print(f'dip = {dip}')
+    print(f'n_neigh = {n_neigh}')
+    print(f'Neigh = {Neigh}')
+    print(f'dist = {dist}')
 
     #fprintf('alpha %d\n',alpha)
     for i in range(n_neigh):
-      temp = (-(dist[i])**2)/alpha
+      #temp = (-(dist[i])**2)/alpha
+      temp = (-(dist[i]) ** 2)
       temp = math.exp(temp)
+      print(f'temp = {temp}')
       p.append(temp)
+      print(f'p = {p[-1]}')
       ps = ps + p[-1]
 
 
@@ -83,6 +96,7 @@ def childs(k, dip, j):
         p[h] = 0
     i_neigh = sum(p)
 
+    print(f'i_neigh = {i_neigh}')
     childs(k, Neigh[int(i_neigh-1)], j)
 
 for j in range(kol_chains):
@@ -92,6 +106,7 @@ for j in range(kol_chains):
   dip = random.randint(0, len(idx)-1)
   childs(0, idx[dip], j)
   #print(results[j])
+
 
 
 """
@@ -106,10 +121,9 @@ for dip in idx:
 """
 
 
-with open("graph_dips_region_test", "wb") as fp:  # Pickling
- pickle.dump(results, fp)
+#with open("graph_dips_region_test", "wb") as fp:  # Pickling
+ #pickle.dump(results, fp)
 
 
 #with open("test", "rb") as fp:   # Unpickling
 #  b = pickle.load(fp)
-
