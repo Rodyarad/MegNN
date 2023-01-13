@@ -6,17 +6,16 @@ import pickle
 import matplotlib.pyplot as plt
 
 kol_sensor = 306
-target_snr_db = 20
+target_snr_db = 10
 time_m = 1000
 
-with open("graph_dips_region", "rb") as fp:   # Unpickling
+with open("graph_dips_region_test", "rb") as fp:   # Unpickling
   graph_dips = pickle.load(fp)
 
-#kol_graf = len(graph_dips[:,0])
-kol_graf = 1
-k = 4
 
-#graf_dips = [[1, [1, 1], 1, 1]]
+kol_graf = len(graph_dips)
+k = 10
+
 
 def noiser(sig,target_snr_db):
     rez = []
@@ -47,22 +46,23 @@ for i in range(0, kol_graf):
     temp = graph_dips[i]
     temp_rez = []
     for j in range(0, k):
-        if type(temp[j]) != int:
+        if len(temp[j]) > 1:
             sig = [[0]]
             for z in temp[j]:
-                ad = 'D:/data/snap' + str(z) + '.csv'
-                twinks = pd.read_csv(ad)
+                ad = 'region/snap' + str(z) + '.csv'
+                twinks = pd.read_csv(ad, header=None)
                 twinks = twinks.to_numpy()
                 sig = sig + twinks
         else:
-            ad = 'D:/data/snap' + str(temp[j]) + '.csv'
-            sig = pd.read_csv(ad)
+            ad = 'region/snap' + str(temp[j][0]) + '.csv'
+            sig = pd.read_csv(ad, header=None)
             sig = sig.to_numpy()
 
         temp_rez.append([])
         temp_rez[j] = noiser(sig.tolist(),target_snr_db)
 
     rez.append(temp_rez)
+    print(f'Обработана последовательность {i}')
 
 X = np.array(rez)
-np.save('X', X)
+np.save('X_test', X)

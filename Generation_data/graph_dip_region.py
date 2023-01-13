@@ -18,7 +18,7 @@ with open("oblast", "rb") as fp:   # Unpickling
 
 max_k = 10
 results = []
-kol_chains = 30
+kol_chains = 250
 
 """Функция создания ветви возбуждаемых диполей"""
 
@@ -93,11 +93,23 @@ for j in range(kol_chains):
   childs(0, idx[dip], j)
   #print(results[j])
 
-#with open("graph_dips_region", "wb") as fp:  # Pickling
-  #pickle.dump(results, fp)
+
+"""
+j = 0
+for dip in idx:
+  for i in range(70):
+    results.append([])
+    for n in range(max_k):
+      results[j].append([])
+    childs(0,dip,j)
+    j+=1
+"""
+
+
+with open("graph_dips_region_test", "wb") as fp:  # Pickling
+ pickle.dump(results, fp)
 
 
 #with open("test", "rb") as fp:   # Unpickling
 #  b = pickle.load(fp)
-
 

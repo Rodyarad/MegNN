@@ -7,7 +7,7 @@ import pickle
 d = np.genfromtxt('Vert.csv', delimiter = ',')
 d = d[1:]
 
-R = 7
+R = 10
 n = 15002
 n_neigh = 0
 Neigh = []
@@ -55,5 +55,5 @@ for view_dipol in Neigh:
         temp.append(R1)
     d_dip.append(temp)
 
-#with open("oblast", "wb") as fp:  # Pickling
-  #pickle.dump(Neigh, fp)
+with open("oblast", "wb") as fp:  # Pickling
+  pickle.dump(Neigh, fp)
